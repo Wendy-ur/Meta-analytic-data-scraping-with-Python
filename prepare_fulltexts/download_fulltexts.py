@@ -18,13 +18,13 @@ chrome_options.add_argument("--enable-javascript")
 chrome_options.add_argument("--headless=new")
 
 # You must fill out PATH_TO_SELENIUM with a path to your chromedriver
-PATH_TO_CHROME = r'chrome-win64\chromedriver.exe'
-service_chr = Service(PATH_TO_CHROME)
+PATH_TO_CHROME = r'chrome-win64\chromedriver.exe' ##*hard coded, assumes a specific pathway to chromedriver & needs to be edited for usage
+service_chr = Service(PATH_TO_CHROME) ##*^Based on previous hard coded line
 driver = None
 
 
 def get_Wiley_xml(doi, ):
-    url = fr'https://onlinelibrary.wiley.com/doi/full-xml/{doi}'
+    url = fr'https://onlinelibrary.wiley.com/doi/full-xml/{doi}' #*Technically hard coded, but hard coded to the publication source (as is the get_Springer_html, get_Frontiers_html file, so not necessarily an issue?
     print(f'Wiley: {url=}')
     return get_url(url)
 
@@ -36,7 +36,7 @@ def get_Springer_html(doi):
 
 
 def get_Frontiers_html(doi):
-    url = fr'https://www.frontiersin.org/journals/psychology/articles/{doi}/full'
+    url = fr'https://www.frontiersin.org/journals/psychology/articles/{doi}/full' #**Hard coded to psychology journals, need to generalize
     print(f'Frontiers: {url=}')
     return get_url(url)
 
@@ -49,15 +49,15 @@ def get_SAGE_xml(doi, ):
 
 def get_url(url):
     global driver
-    if driver is None:
-        driver = webdriver.Chrome(service=service_chr, options=chrome_options)
-    driver.get(url)
-    html = driver.page_source
-    html_lower = html.lower()
-    if 'error 404' in html_lower or 'http 404' in html_lower:
+    if driver is None: #Previously initialized driver=None (line 23)
+        driver = webdriver.Chrome(service=service_chr, options=chrome_options) #Opens a new google chrome browser
+    driver.get(url) #driver.get(url) loads the url in the browser previously opened^
+    html = driver.page_source #Retrieves html source code from open browser
+    html_lower = html.lower() ##makes the html source code found on page 55 lowercase (presumably to make the next few lines of code shorter)
+    if 'error 404' in html_lower or 'http 404' in html_lower: ##**If the html yields a 404 error, return 404 to user. It might be worth checking to ensure that these are all of the possible 404 errors that could come up (i.e. not different phrasing)
         return '404'
-    elif ('needs to review the security' in html_lower or
-          "too many accesses" in html_lower):
+    elif ('needs to review the security' in html_lower or ##**Same concern as line 57
+          "too many accesses" in html_lower): ##**Same concern as line 57
         return 'security'
     return html
 
