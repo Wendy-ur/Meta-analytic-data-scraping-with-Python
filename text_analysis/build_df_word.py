@@ -34,6 +34,9 @@ def clean_words(word_counter, words_above):
             # print(f'Word not in, not necessary to override: {word}')
 
     return words_above, word_counter
+    # This function is designed to prevent certain ambiguous words from affecting the program's statistical analysis and classification. 
+    # It first identifies the top 2,500 most frequent words in the papers and compares them with a predefined list of Python keywords. 
+    # Any overlapping words, along with the terms "school", "year", and "country", are appended with an underscore (_) to distinguish them from their original meanings. The modified words are then written back into the text for further processing.
 
 
 def singularize_sentence(sentence_set):
