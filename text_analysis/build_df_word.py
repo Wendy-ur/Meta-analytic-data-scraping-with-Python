@@ -301,3 +301,18 @@ if __name__ == '__main__':
         for STAT_TYPE in STAT_TYPES:
             make_paper_word_df(stat_type=STAT_TYPE, p_implied=P_IMPLIED,
                                num_words=2500, subject=SUBJECT)
+
+# Pipeline overview:
+# - Execution begins in the main block and iterates through different
+#   statistic types (t, F, chi, rB, all).
+# - make_paper_word_df() orchestrates the entire workflow.
+# - get_word_lists() extracts high-frequency vocabulary from cleaned
+#   statistical-result sentences.
+# - clean_sentence_rows() removes invalid, duplicate, and non-significant
+#   observations, while prune_to_stat_type() filters by statistic type.
+# - try_singular() and singularize_sentence() standardize word forms,
+#   and special handling is applied to hyphenated terms.
+# - get_is_fragile() assigns fragility labels based on p-value thresholds.
+# - A binary word-occurrence matrix is generated, indicating whether each
+#   of the top 2500 words appears in each sentence.
+# - The final dataframe is exported for subsequent modeling and analysis.
